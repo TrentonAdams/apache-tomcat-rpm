@@ -7,7 +7,7 @@ License: Apache Software License.
 Url: http://tomcat.apache.org 
 Source0: http://apache.mirror.iweb.ca/tomcat/tomcat-7/v%{version}/src/%{name}-%{version}-src.tar.gz
 Source1: http://www.apache.org/dist/tomcat/tomcat-7/v%{version}/src/%{name}-%{version}-src.tar.gz.md5
-Source2: apache-tomcat-initscript
+Source2: https://raw.github.com/TrentonAdams/%{name}-rpm/master/%{name}-initscript
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-build
 BuildRequires: ant
@@ -21,7 +21,7 @@ Apache Tomcat is an open source software implementation of the Java Servlet and 
 %package manager
 Summary: The management web application of Apache Tomcat.
 Group: System Environmnet/Applications
-Requires: %{name}-%{version}-%{release}
+Requires: %{name}
 BuildArch: noarch
 
 %description manager
@@ -30,7 +30,7 @@ The management web application of Apache Tomcat.
 %package ROOT
 Summary: The ROOT web application of Apache Tomcat.
 Group: System Environmnet/Applications
-Requires: %{name}-%{version}-%{release}
+Requires: %{name}
 BuildArch: noarch
 
 %description ROOT
@@ -39,7 +39,7 @@ The ROOT web application of Apache Tomcat.
 %package docs
 Summary: The docs web application of Apache Tomcat.
 Group: System Environmnet/Applications
-Requires: %{name}-%{version}-%{release}
+Requires: %{name}
 BuildArch: noarch
 
 %description docs
@@ -48,7 +48,7 @@ The docs web application of Apache Tomcat.
 %package examples
 Summary: The examples web application of Apache Tomcat.
 Group: System Environmnet/Applications
-Requires: %{name}-%{version}-%{release}
+Requires: %{name}
 BuildArch: noarch
 
 %description examples
@@ -57,7 +57,7 @@ The examples web application of Apache Tomcat.
 %package host-manager
 Summary: The host-manager web application of Apache Tomcat.
 Group: System Environmnet/Applications
-Requires: %{name}-%{version}-%{release}
+Requires: %{name}
 BuildArch: noarch
 
 %description host-manager
@@ -71,7 +71,7 @@ md5sum -c %{name}-%{version}-src.tar.gz.md5 || (echo "Source archive failed m5su
 
 # This tells ant to install software in a specific directory.
 cat << EOF >> build.properties
-base.path=%{buildroot}/opt/apache-tomcat
+base.path=%{buildroot}/opt/%{name}
 EOF
 
 %build
@@ -80,15 +80,14 @@ ant
 
 %install
 rm -Rf %{buildroot}
-mkdir -p %{buildroot}/opt/apache-tomcat
-mkdir -p %{buildroot}/opt/apache-tomcat/pid
+mkdir -p %{buildroot}/opt/%{name}
+mkdir -p %{buildroot}/opt/%{name}/pid
 mkdir -p %{buildroot}/etc/init.d/
-mkdir -p %{buildroot}/var/run/apache-tomcat
+mkdir -p %{buildroot}/var/run/%{name}
 cd %{_builddir}/%{name}-%{version}-src
 ls -l
-%{__cp} -Rip ./output/build/{bin,conf,lib,logs,temp,webapps} %{buildroot}/opt/apache-tomcat
-#%{__cp} -Rip ./webapps/ %{buildroot}/opt/apache-tomcat
-%{__cp} %{_sourcedir}/apache-tomcat-initscript %{buildroot}/etc/init.d/apache-tomcat
+%{__cp} -Rip ./output/build/{bin,conf,lib,logs,temp,webapps} %{buildroot}/opt/%{name}
+%{__cp} %{SOURCE2} %{buildroot}/etc/init.d/%{name}
 
 %clean
 rm -rf %{buildroot}
@@ -109,32 +108,32 @@ fi
 
 %files
 %defattr(640,tomcat,tomcat,750)
-%dir /opt/apache-tomcat
-%config /opt/apache-tomcat/conf/*
-/opt/apache-tomcat/bin
-/opt/apache-tomcat/lib
-/opt/apache-tomcat/logs
-/opt/apache-tomcat/temp
-/opt/apache-tomcat/pid
-%dir /opt/apache-tomcat/webapps
-/var/run/apache-tomcat
-%attr(0750,tomcat,tomcat) /opt/apache-tomcat/bin/*.sh
-%attr(0755,root,root) /etc/init.d/apache-tomcat
+%dir /opt/%{name}
+%config /opt/%{name}/conf/*
+/opt/%{name}/bin
+/opt/%{name}/lib
+/opt/%{name}/logs
+/opt/%{name}/temp
+/opt/%{name}/pid
+%dir /opt/%{name}/webapps
+/var/run/%{name}
+%attr(0750,tomcat,tomcat) /opt/%{name}/bin/*.sh
+%attr(0755,root,root) /etc/init.d/%{name}
 
 %files manager
-/opt/apache-tomcat/webapps/manager
+/opt/%{name}/webapps/manager
 
 %files ROOT
-/opt/apache-tomcat/webapps/ROOT
+/opt/%{name}/webapps/ROOT
 
 %files docs
-/opt/apache-tomcat/webapps/docs
+/opt/%{name}/webapps/docs
 
 %files examples
-/opt/apache-tomcat/webapps/examples
+/opt/%{name}/webapps/examples
 
 %files host-manager
-/opt/apache-tomcat/webapps/host-manager
+/opt/%{name}/webapps/host-manager
 
 %changelog
 * Mon Jul 4 2011 - robert (at) meinit.nl
