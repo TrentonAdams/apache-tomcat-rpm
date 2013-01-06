@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir -p ~/rpmbuild/SOURCES
+cp apache-tomcat-initscript ~/rpmbuild/SOURCES
+spectool -R -g apache-tomcat.spec
+rpmbuild -bb apache-tomcat.spec
