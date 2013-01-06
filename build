@@ -1,6 +1,17 @@
 #!/bin/bash
 
-mkdir -p ~/rpmbuild/SOURCES
-cp apache-tomcat-initscript ~/rpmbuild/SOURCES
+ret=$(rpm -q rpmdevtools | grep not)
+if [ ! -z ${ret} ]; then
+    echo "You need to install rpmdevtools"
+    exit 1
+fi
+
+if [ ! -d ~/rpmbuild ]; then
+    rpmdev-setuptree
+fi
+
+spec_file="apache-tomcat.spec"
+cp ${spec_file} ~/rpmbuild/SPECS
+cd ~/rpmbuild/SPECS
 spectool -R -g apache-tomcat.spec || exit 1; #|| (echo "Please install rpmdevtools" && exit 1)
-rpmbuild -bb apache-tomcat.spec
+rpmbuild -ba apache-tomcat.spec
