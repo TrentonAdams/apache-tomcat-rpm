@@ -2,5 +2,5 @@
 
 mkdir -p ~/rpmbuild/SOURCES
 cp apache-tomcat-initscript ~/rpmbuild/SOURCES
-spectool -R -g apache-tomcat.spec
+spectool -R -g apache-tomcat.spec || exit 1; #|| (echo "Please install rpmdevtools" && exit 1)
 rpmbuild -bb apache-tomcat.spec
