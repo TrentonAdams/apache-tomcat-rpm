@@ -136,5 +136,12 @@ fi
 /opt/%{name}/webapps/host-manager
 
 %changelog
+* Sat Jan 5 2011 - Trenton D. Adams <trenton.d.adams@gmail.com> 7.0.34-9
+ - Initial github release
+ - added md5sum checking
+ - change a few file permissions
+ - add Source0 and Source1 urls for the source package and md5 sum of said
+   package.  "spectool -R -g apache-tomcat.spec" can retrieve required 
+   source files.
 * Mon Jul 4 2011 - robert (at) meinit.nl
 - Initial release.
