@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ret=$(rpm -q rpmdevtools | grep not)
-if [ ! -z ${ret} ]; then
+if [ ! -z "${ret}" ]; then
     echo "You need to install rpmdevtools"
     exit 1
 fi
@@ -11,7 +11,7 @@ if [ ! -d ~/rpmbuild ]; then
 fi
 
 spec_file="apache-tomcat.spec"
-cp ${spec_file} ~/rpmbuild/SPECS
+cp "${spec_file}" ~/rpmbuild/SPECS
 cd ~/rpmbuild/SPECS
 spectool -R -g apache-tomcat.spec || exit 1; #|| (echo "Please install rpmdevtools" && exit 1)
 rpmbuild -ba apache-tomcat.spec
